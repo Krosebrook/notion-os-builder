@@ -17,7 +17,7 @@ import { FileText, Plus } from 'lucide-react';
 
 function App() {
   const { user, isLoading: authLoading, login } = useAuth();
-  const { pages, isLoading: pagesLoading, createPage, updatePage, archivePage } = usePages();
+  const { pages, isLoading: pagesLoading, createPage, updatePage, archivePage } = usePages(!!user);
   const [activePageId, setActivePageId] = useState<string | undefined>();
 
   const activePage = pages.find(p => p.id === activePageId);

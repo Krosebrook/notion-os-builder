@@ -2,11 +2,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { blink } from '@/lib/blink';
 import type { Page } from '@/types/page';
 
-export function usePages() {
+export function usePages(isAuthenticated: boolean) {
   const [pages, setPages] = useState<Page[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchPages = useCallback(async () => {
+    if (!isAuthenticated) {
+      setIsLoading(false);
+      return;
+    }
     try {
       setIsLoading(true);
       const data = await blink.db.table<Page>('pages').list({
@@ -19,7 +23,7 @@ export function usePages() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     fetchPages();
